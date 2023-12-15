@@ -48,11 +48,17 @@ if (isset($_POST['cari'])){
 	sks like '%$cari%' or
 	jns like '%$cari%' or
 	smt like '%$cari%'";
+	$rs = search('matkul', "idmatkul like'%$cari%' or
+	namamatkul like '%$cari%' or
+	sks like '%$cari%' or
+	jns like '%$cari%' or
+	smt like '%$cari%'");
 }else{
-	$sql="select * from matkul";		
+	// $sql="select * from matkul";		
+	$rs = search("matkul");
 }
-$qry = mysqli_query($koneksi,$sql) or die(mysqli_error($koneksi));
-$jmlData = mysqli_num_rows($qry);
+// $qry = mysqli_query($koneksi,$rs) or die(mysqli_error($koneksi));
+$jmlData = mysqli_num_rows($rs);
 
 $jmlHal = ceil($jmlData / $jmlDataPerHal);
 if (isset($_GET['hal'])){
@@ -72,13 +78,20 @@ if (!$jmlData){
 if (isset($_POST['cari'])){
 	$cari=$_POST['cari'];
 	$sql="select * from matkul where idmatkul like'%$cari%' or
-						  namamatkul like '%$cari%' or
-						  sks like '%$cari%' or
-						  jns like '%$cari%' or
-						  smt like '%$cari%'
-						  limit $awalData,$jmlDataPerHal";
+	namamatkul like '%$cari%' or
+	sks like '%$cari%' or
+	jns like '%$cari%' or
+	smt like '%$cari%'
+	limit $awalData,$jmlDataPerHal";
+	$rs = search('matkul', "idmatkul like'%$cari%' or
+	namamatkul like '%$cari%' or
+	sks like '%$cari%' or
+	jns like '%$cari%' or
+	smt like '%$cari%'
+	limit $awalData,$jmlDataPerHal");
 }else{
 	$sql="select * from matkul limit $awalData,$jmlDataPerHal";		
+	$rs = mysqli_query($koneksi,$sql) or die(mysqli_error($koneksi));
 }
 //Ambil data untuk ditampilkan
 $hasil=mysqli_query($koneksi,$sql) or die(mysqli_error($koneksi));
@@ -151,7 +164,7 @@ $hasil=mysqli_query($koneksi,$sql) or die(mysqli_error($koneksi));
 		}else{
 			$no=$awalData;
 		}
-		while($row=mysqli_fetch_assoc($hasil)){
+		while($row=mysqli_fetch_assoc($rs)){
 			?>	
 			<tr>
 				<td><?php echo $no?></td>
